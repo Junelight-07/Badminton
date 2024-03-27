@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./Header/Header";
+import Home from "./Home/Home";
+import Gestion from "./Gestion/Gestion";
+import DeleteUser from "./DeleteUser/DeleteUser";
+import EditUser from "./EditUser/EditUser";
+import UserDetails from "./DisplayUser/DisplayUser";
+import SearchUser from "./SearchUser/SearchUser";
+import AddUser from "./AddUser/AddUser";
+import Login from "./Login/Login";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import React from "react";
 
-function App() {
+export default function App() {
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+  const isAdmin = isLoggedIn && token === "admin-token";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {isLoggedIn && <Header isAdmin={isAdmin} isLoggedIn={isLoggedIn} />}
+      <Routes>
+        {isLoggedIn && <Route path="/" element={<Home />} />}
+        {isAdmin && <Route path="/gestion" element={<Gestion />} />}
+        {isAdmin && <Route path="/delete-user" element={<DeleteUser />} />}
+        {isAdmin && <Route path="/edit-user" element={<EditUser />} />}
+        {isAdmin && <Route path="/details-user" element={<UserDetails />} />}
+        {isAdmin && <Route path="/search-user" element={<SearchUser />} />}
+        {isAdmin && <Route path="/add-user" element={<AddUser />} />}
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+      {/*<Footer />*/}
+    </Router>
   );
 }
-
-export default App;
