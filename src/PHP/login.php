@@ -1,11 +1,11 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:4200");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST, DELETE, OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type, origin");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    exit;
+}
 
 $requestData = json_decode(file_get_contents('php://input'));
 
@@ -32,8 +32,6 @@ if (!empty($requestData->username) && !empty($requestData->password)) {
     } else {
         http_response_code(401);
         echo json_encode(['message' => 'Invalid credentials']);
-        echo json_encode(['message' => $password]);
-        echo json_encode(['message' => $user]);
     }
 } else {
     http_response_code(400);

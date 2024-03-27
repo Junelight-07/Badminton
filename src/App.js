@@ -18,7 +18,8 @@ import React from "react";
 
 export default function App() {
   const token = localStorage.getItem("token");
-  const isLoggedIn = !!token;
+  const rememberToken = localStorage.getItem("rememberToken");
+  const isLoggedIn = !!token || !!rememberToken;
   const isAdmin = isLoggedIn && token === "admin-token";
 
   return (

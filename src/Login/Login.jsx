@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Alert, Button, Form, Input, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
@@ -23,18 +23,28 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.log(err);
         setError("An error occurred while trying to log in");
+        if (err.request.response) setError("Invalid credentials");
       });
   };
 
   return (
-    <>
-      <h2>Login Page</h2>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      <h2>{"Login Page"}</h2>
       <Form
         name="normal_login"
         initialValues={{
           remember: true,
+        }}
+        style={{
+          textAlign: "center",
         }}
         onFinish={onFinish}
       >
@@ -45,6 +55,7 @@ export default function Login() {
         >
           <Input prefix={<UserOutlined />} type="text" placeholder="Username" />
         </Form.Item>
+
         <Form.Item
           name="password"
           required
@@ -58,21 +69,22 @@ export default function Login() {
             placeholder="Password"
           />
         </Form.Item>
-        {error && <Alert message={error} type="error" />}
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
 
-          <a href="/">Forgot password</a>
-        </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Log in
-          </Button>
-          Or <a href="/">register now!</a>
+          <a href="/">{"Forgot password"}</a>
+        </Form.Item>
+
+        {error && <Alert message={error} type="error" />}
+
+        <Form.Item>
+          <Space>
+            <Button type="primary" htmlType="submit">
+              {"Log in"}
+            </Button>
+            Or <a href="/">{"register now!"}</a>
+          </Space>
         </Form.Item>
       </Form>
-    </>
+    </div>
   );
 }
