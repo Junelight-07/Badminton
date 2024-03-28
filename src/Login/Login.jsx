@@ -22,7 +22,7 @@ export default function Login() {
           }
           navigate("/home");
         } else {
-          setError("Invalid credentials");
+          setError(res.data.message);
         }
       })
       .catch((err) => {
@@ -81,7 +81,7 @@ export default function Login() {
             <Button type="primary" htmlType="submit">
               {"Log in"}
             </Button>
-            Or <a href="/create-user">{"register now!"}</a>
+            {"Or"} <a href="/create-user">{"register now!"}</a>
           </Space>
         </Form.Item>
       </Form>

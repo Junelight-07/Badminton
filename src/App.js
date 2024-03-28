@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Header/Header";
 import Home from "./Home/Home";
 import Gestion from "./Gestion/Gestion";
@@ -15,22 +10,24 @@ import SearchUser from "./SearchUser/SearchUser";
 import AddUser from "./AddUser/AddUser";
 import Login from "./Login/Login";
 import CreateUser from "./CreateUser/CreateUser";
+import AppContextProvider, { useAppContext } from "./Context/AppContext";
 
 export default function App() {
-  let token = localStorage.getItem("token");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  console.log("token1", token);
+  return (
+    <AppContextProvider>
+      <AppContent />
+    </AppContextProvider>
+  );
+}
 
-  useEffect(() => {
-    console.log("token2", token);
-    setIsLoggedIn(!!token);
-    setIsAdmin(token === "admin-token");
-  }, [token]);
+function AppContent() {
+  const { isLoggedIn, isAdmin } = useAppContext();
+  console.log("isLoggedIn2", isLoggedIn);
+  console.log("isAdmin2", isAdmin);
 
   return (
-    <Router>
-      {isLoggedIn && <Header isAdmin={isAdmin} isLoggedIn={isLoggedIn} />}
+    <BrowserRouter>
+      {isLoggedIn && <Header isAdmin={isAdmin} />}
       <Routes>
         {isLoggedIn && <Route path="/" element={<Home />} />}
         {isLoggedIn && <Route path="/home" element={<Home />} />}
@@ -42,9 +39,9 @@ export default function App() {
         {isAdmin && <Route path="/add-user" element={<AddUser />} />}
         <Route path="/login" element={<Login />} />
         <Route path="/create-user" element={<CreateUser />} />
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/*<Route path="*" element={<Navigate to="/login" />} />*/}
       </Routes>
       {/*<Footer />*/}
-    </Router>
+    </BrowserRouter>
   );
 }
