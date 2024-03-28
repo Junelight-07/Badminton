@@ -8,16 +8,18 @@ import {
   HomeFilled,
   SettingOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 Header.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 export default function Header({ isAdmin }) {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState("mail");
 
   const onButtonClick = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   function getItem(label, key, icon, children, type) {
