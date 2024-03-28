@@ -12,14 +12,10 @@ export default function AppContextProvider({ children }) {
   const token = localStorage.getItem("token");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  console.log("token1", token);
 
   useEffect(() => {
-    console.log("token2", token);
     setIsLoggedIn(!!token);
     setIsAdmin(token === "admin-token");
-    console.log("isLoggedIn1", isLoggedIn);
-    console.log("isAdmin1", isAdmin);
   }, []);
 
   return (

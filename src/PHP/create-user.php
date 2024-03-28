@@ -22,7 +22,7 @@ if (!empty($requestData->values)) {
         $villeAdh = $values->villeAdh;
         $cpAdh = $values->cpAdh;
         $niveauAdh = $values->niveauAdh;
-        $typeAdh = $values->typeAdh;
+        $typeAdh = "adhérent"; // Ajout du type "adhérent"
 
         $mysqli = new mysqli("127.0.0.1", "root", "", "badminton");
 
@@ -30,28 +30,21 @@ if (!empty($requestData->values)) {
             echo json_encode(array("status" => "error", "message" => "Erreur de connexion à la base de données: " . $mysqli->connect_error));
             exit;
         }
+
         $adhRequest = $mysqli->prepare('INSERT INTO adherents (nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh) VALUES (?, ?, ?, ?, ?, ?, ?)');
         $adhRequest->bind_param('sssssss', $nomAdh, $prenomAdh, $adresseAdh, $villeAdh, $cpAdh, $niveauAdh, $typeAdh);
         $adhRequest->execute();
 
-        $usernameExists = $mysqli->prepare('SELECT username FROM users WHERE username = ?');
-        $usernameExists->bind_param('s', $username);
-        $usernameExists->execute();
-        $result = $usernameExists->get_result();
+        $adherentId = $mysqli->insert_id;
 
-        if ($result->num_rows > 0) {
-            echo json_encode(array("status" => "error", "message" => "Username already exists"));
+        $userRequest = $mysqli->prepare('INSERT INTO users (username, password, idAdh, type) VALUES (?, ?, ?, ?)');
+        $userRequest->bind_param('ssis', $username, $password, $adherentId, $typeAdh);
+        $userRequest->execute();
+
+        if ($userRequest->affected_rows > 0) {
+            echo json_encode(array("status" => "done", "message" => "New username and adherent created successfully"));
         } else {
-            $userRequest = $mysqli->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
-            $userRequest->bind_param('ss', $username, $password);
-            $userRequest->execute();
-
-            if ($userRequest->affected_rows > 0) {
-                echo json_encode(array("status" => "done", "message" => "New username created successfully"));
-            } else {
-                http_response_code(401);
-                echo json_encode(['message' => 'Invalid credentials']);
-            }
+            echo json_encode(array("status" => "error", "message" => "Failed to create new username or associate adherent with user"));
         }
     }
 } else {
