@@ -3,22 +3,22 @@ import axios from "axios";
 import DonutChart from "react-donut-chart";
 
 export default function MyComponent() {
-  const [chartData, setChartData] = useState({});
+  const [datas, setDatas] = useState({});
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1/badminton/src/PHP/get-datas.php")
       .then((response) => {
-        setChartData(response.data);
+        setDatas(response.data);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données:", error);
       });
   }, []);
 
-  function renderTypeDonut(data) {
+  function renderTypeDonut(d) {
     let counts = {};
-    data.forEach((item) => {
+    d.map((item) => {
       if (!counts[item.typeAdh]) {
         counts[item.typeAdh] = 0;
       }
@@ -33,9 +33,9 @@ export default function MyComponent() {
     return <DonutChart data={chartData} />;
   }
 
-  function renderNiveauDonut(data) {
+  function renderNiveauDonut(d) {
     let counts = {};
-    data.forEach((item) => {
+    d.map((item) => {
       if (!counts[item.niveauAdh]) {
         counts[item.niveauAdh] = 0;
       }
@@ -68,11 +68,14 @@ export default function MyComponent() {
   }
 
   return (
-    <div>
-      <div id="id_div_1">
-        <h1>Type des adhérents</h1>
-        {chartData.length && renderTypeDonut(chartData)}
-        {chartData.length && renderNiveauDonut(chartData)}
+    <div style={{ display: "flex" }}>
+      <div>
+        <h1>{"Type des adhérents"}</h1>
+        {datas.length && renderTypeDonut(datas)}
+      </div>
+      <div>
+        <h1>{"Niveau des adhérents"}</h1>
+        {datas.length && renderNiveauDonut(datas)}
       </div>
     </div>
   );

@@ -100,6 +100,7 @@ export default function Header({ isAdmin }) {
   return (
     <header style={{ display: "flex", justifyContent: "space-between" }}>
       <Menu
+        style={{ width: "50vw" }}
         onClick={onClick}
         selectedKeys={[current]}
         mode="horizontal"

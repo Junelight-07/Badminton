@@ -22,8 +22,6 @@ export default function App() {
 
 function AppContent() {
   const { isLoggedIn, isAdmin } = useAppContext();
-  console.log("isLoggedIn2", isLoggedIn);
-  console.log("isAdmin2", isAdmin);
 
   return (
     <BrowserRouter>
