@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {
         exit;
     }
 
-    $query = "SELECT * FROM adherent WHERE idAdh = ?";
+    $query = "SELECT * FROM adherents WHERE idAdh = ?";
 
     if ($stmt = mysqli_prepare($mysqli, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $id);

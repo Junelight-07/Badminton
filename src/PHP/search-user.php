@@ -11,7 +11,7 @@ if (isset($_GET['search'])) {
         die("Erreur de connexion à la base de données: " . $mysqli->connect_error);
     }
 
-    $query = "SELECT * FROM adherent WHERE nomAdh LIKE '%$searchQuery%' OR prenomAdh LIKE '%$searchQuery%' OR typeAdh LIKE '%$searchQuery%'";
+    $query = "SELECT * FROM adherents WHERE nomAdh LIKE '%$searchQuery%' OR prenomAdh LIKE '%$searchQuery%' OR typeAdh LIKE '%$searchQuery%'";
 
     $result = $mysqli->query($query);
 

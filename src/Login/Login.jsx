@@ -14,10 +14,13 @@ export default function Login() {
         username: values.username,
         password: values.password,
       })
-      .then((res) => {
-        if (res.data.token) {
-          localStorage.setItem("token", res.data.token);
-          navigate("/");
+      .then(async (res) => {
+        console.log("res", res);
+        if (res.status === 200) {
+          if (res.data.token) {
+            await localStorage.setItem("token", res.data.token);
+          }
+          navigate("/home");
         } else {
           setError("Invalid credentials");
         }
@@ -62,16 +65,13 @@ export default function Login() {
           rules={[
             { required: true, message: "Veuillez entrer un mot de passe" },
           ]}
+          extra={<a href="/">{"Forgot password"}</a>}
         >
           <Input.Password
             prefix={<LockOutlined />}
             type="password"
             placeholder="Password"
           />
-        </Form.Item>
-
-        <Form.Item>
-          <a href="/">{"Forgot password"}</a>
         </Form.Item>
 
         {error && <Alert message={error} type="error" />}
@@ -81,7 +81,7 @@ export default function Login() {
             <Button type="primary" htmlType="submit">
               {"Log in"}
             </Button>
-            Or <a href="/">{"register now!"}</a>
+            Or <a href="/create-user">{"register now!"}</a>
           </Space>
         </Form.Item>
       </Form>

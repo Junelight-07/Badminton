@@ -30,7 +30,7 @@ if (!$mysqli) {
     exit;
 }
 
-$query = "INSERT INTO adherent(idAdh, nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO adherents(idAdh, nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
 
 if ($stmt = mysqli_prepare($mysqli, $query)) {
     mysqli_stmt_bind_param($stmt, "ssssiss", $nom, $prenom, $adresse, $ville, $cp, $nivAdh, $typeAdh);

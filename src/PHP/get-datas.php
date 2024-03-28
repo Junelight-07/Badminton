@@ -7,7 +7,7 @@ if (!isset($_SESSION["pseudo"])) {
 $base = mysqli_connect("127.0.0.1", "root", "root", "badminton");
 mysqli_set_charset($base, "utf8");
 
-$requete = "select * from adherent";
+$requete = "select * from adherents";
 $resultat = mysqli_query($base, $requete);
 $adherents = array();
 

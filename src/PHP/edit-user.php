@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
     $niveau = $requestData['niveauAdh'];
     $type = $requestData['typeAdh'];
 
-    $query = "UPDATE adherent SET nomAdh = ?, prenomAdh = ?, adresseAdh = ?, VilleAdh = ?, cpAdh = ?, NiveauAdh = ?, TypeAdh = ? WHERE idAdh = ?";
+    $query = "UPDATE adherents SET nomAdh = ?, prenomAdh = ?, adresseAdh = ?, VilleAdh = ?, cpAdh = ?, NiveauAdh = ?, TypeAdh = ? WHERE idAdh = ?";
 
     if ($stmt = mysqli_prepare($mysqli, $query)) {
         mysqli_stmt_bind_param($stmt, "sssssssi", $nom, $prenom, $adresse, $ville, $cp, $niveau, $type, $id);

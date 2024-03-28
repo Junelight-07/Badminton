@@ -14,7 +14,7 @@ if (isset($_GET['id'])) {
         die("Erreur de connexion à la base de données: " . mysqli_connect_error());
     }
 
-    $query = "DELETE FROM adherent WHERE idAdh = ?";
+    $query = "DELETE FROM adherents WHERE idAdh = ?";
 
     if ($stmt = mysqli_prepare($mysqli, $query)) {
         mysqli_stmt_bind_param($stmt, "i", $id);
