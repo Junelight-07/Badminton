@@ -6,8 +6,7 @@ if (!isset($_SESSION["pseudo"])) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $mysqli = mysqli_connect("127.0.0.1", "root", "root", "badminton");
-
+    $mysqli = mysqli_connect("127.0.0.1", "root", "", "badminton");
     if (!$mysqli) {
         echo json_encode(array("status" => "error", "message" => "Erreur de connexion à la base de données"));
         exit;

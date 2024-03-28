@@ -4,7 +4,7 @@ if (!isset($_SESSION["pseudo"])) {
     header("Access-Control-Allow-Origin: *");
 }
 
-$base = mysqli_connect("127.0.0.1", "root", "root", "badminton");
+$base = mysqli_connect("127.0.0.1", "root", "", "badminton");
 mysqli_set_charset($base, "utf8");
 
 $requete = "select * from adherents";

@@ -23,7 +23,7 @@ $cp = $requestData['cpAdh'];
 $nivAdh = $requestData['niveauAdh'];
 $typeAdh = $requestData['typeAdh'];
 
-$mysqli = mysqli_connect("127.0.0.1", "root", "root", "badminton");
+$mysqli = mysqli_connect("127.0.0.1", "root", "", "badminton");
 
 if (!$mysqli) {
     echo json_encode(array("status" => "error", "message" => "Erreur de connexion à la base de données: " . mysqli_connect_error()));

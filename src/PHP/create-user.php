@@ -24,7 +24,7 @@ if (!empty($requestData->values)) {
         $niveauAdh = $values->niveauAdh;
         $typeAdh = $values->typeAdh;
 
-        $mysqli = new mysqli("127.0.0.1", "root", "root", "badminton");
+        $mysqli = new mysqli("127.0.0.1", "root", "", "badminton");
 
         if ($mysqli->connect_error) {
             echo json_encode(array("status" => "error", "message" => "Erreur de connexion à la base de données: " . $mysqli->connect_error));

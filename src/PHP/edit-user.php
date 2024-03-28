@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $mysqli = mysqli_connect("127.0.0.1", "root", "root", "badminton");
-
+    $mysqli = mysqli_connect("127.0.0.1", "root", "", "badminton");
     if (!$mysqli) {
         die("Erreur de connexion à la base de données: " . mysqli_connect_error());
     }
