@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./CreateUser.module.scss";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import { format } from 'date-fns';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
@@ -20,6 +21,11 @@ export default function CreateUser() {
 	const niveaux = ["Débutant", "Intermédiaire", "Expert"];
 	const types = ["Étudiant", "Salarié", "Retraité"];
 	const dateFormat = "DD-MM-YYYY";
+	const currentYear = new Date().getFullYear();
+	const currentDate = format(new Date(), 'dd-MM');
+	const yearFiveAgo = currentYear - 5;
+	const yearHundredAgo = currentYear - 100;
+
 	const formItemLayout = {
 		labelCol: {
 			xs: {
@@ -93,7 +99,6 @@ export default function CreateUser() {
 						maxWidth: 600,
 					}}
 					scrollToFirstError
-					initialValues={{ niveauAdh: niveaux[0] }}
 				>
 					<Form.Item
 						className={styles.item}
@@ -201,10 +206,13 @@ export default function CreateUser() {
 							},
 						]}
 					>
-						<DatePicker
-							defaultValue={dayjs("03-03-2003", dateFormat)}
-							minDate={dayjs("01-01-1924", dateFormat)}
-							maxDate={dayjs("31-12-2018", dateFormat)}
+						<DatePicker 
+						              placeholder="Choisir une date"
+
+							format={'DD-MM-YYYY'}
+							defaultValue={dayjs(`${currentDate}-${yearFiveAgo}`, dateFormat)}
+							minDate={dayjs(`01-01-${yearHundredAgo}`, dateFormat)}
+							maxDate={dayjs(`31-12-${yearFiveAgo}`, dateFormat)}
 						/>
 					</Form.Item>
 					<Form.Item
@@ -265,7 +273,6 @@ export default function CreateUser() {
 						rules={[{ required: true, message: "Veuillez entrer un type" }]}
 					>
 						<Select
-							placeholder={"Please select a type"}
 							options={types.map((type) => ({
 								label: type,
 								value: type,

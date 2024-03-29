@@ -3,7 +3,7 @@ import { Button, Descriptions } from "antd";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function UserDetails() {
+export default function DetailsUser() {
   const [status, setStatus] = useState("loading");
   const [userData, setUserData] = useState(null);
   const location = useLocation();
@@ -55,7 +55,7 @@ export default function UserDetails() {
         title="Informations Utilisateur"
         extra={
           <Button onClick={handleEditClick} type="primary">
-            Edit
+            Modifier
           </Button>
         }
         bordered
