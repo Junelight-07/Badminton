@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Form, Input, message, Select } from "antd";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export default function EditUser() {
   const [status, setStatus] = useState("loading");
@@ -15,10 +15,10 @@ export default function EditUser() {
   const niveaux = ["Débutant", "Intermédiaire", "Expert"];
   const types = ["Étudiant", "Salarié", "Retraité"];
   const dateFormat = "DD-MM-YYYY";
-	const currentYear = new Date().getFullYear();
-	const currentDate = format(new Date(), 'dd-MM');
-	const yearFiveAgo = currentYear - 5;
-	const yearHundredAgo = currentYear - 100;
+  const currentYear = new Date().getFullYear();
+  const currentDate = format(new Date(), "dd-MM");
+  const yearFiveAgo = currentYear - 5;
+  const yearHundredAgo = currentYear - 100;
 
   useEffect(() => {
     axios
@@ -41,7 +41,7 @@ export default function EditUser() {
     axios
       .put(
         `http://127.0.0.1/badminton/src/PHP/edit-user.php?id=${id}`,
-        changedValues,
+        changedValues
       )
       .then((res) => {
         if (res.status === 200) {
@@ -62,7 +62,7 @@ export default function EditUser() {
   } else if (status === "success") {
     return (
       <Form layout="vertical" onFinish={onFinish} initialValues={userData}>
-            <Form.Item
+        <Form.Item
           required
           label="Prénom"
           name="prenomAdh"
@@ -79,24 +79,24 @@ export default function EditUser() {
           <Input />
         </Form.Item>
         <Form.Item
-						required
-						label="Date de naissance"
-						name="dateAdh"
-						rules={[
-							{
-								required: true,
-								message: "Veuillez entrer votre date de naissance",
-							},
-						]}
-					>
-						<DatePicker 
-              placeholder="Choisir une date"
-							format={'DD-MM-YYYY'}
-							defaultValue={dayjs(`${currentDate}-${yearFiveAgo}`, dateFormat)}
-							minDate={dayjs(`01-01-${yearHundredAgo}`, dateFormat)}
-							maxDate={dayjs(`31-12-${yearFiveAgo}`, dateFormat)}
-						/>
-					</Form.Item>
+          required
+          label="Date de naissance"
+          name="dateAdh"
+          rules={[
+            {
+              required: true,
+              message: "Veuillez entrer votre date de naissance",
+            },
+          ]}
+        >
+          <DatePicker
+            placeholder="Choisir une date"
+            format={"DD-MM-YYYY"}
+            defaultValue={dayjs(`${currentDate}-${yearFiveAgo}`, dateFormat)}
+            minDate={dayjs(`01-01-${yearHundredAgo}`, dateFormat)}
+            maxDate={dayjs(`31-12-${yearFiveAgo}`, dateFormat)}
+          />
+        </Form.Item>
         <Form.Item
           required
           label="Adresse"
