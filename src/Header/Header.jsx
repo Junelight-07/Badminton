@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Menu } from "antd";
 import { FaUser } from "react-icons/fa";
+import { GiTennisRacket } from "react-icons/gi";
 import { MdLogout } from "react-icons/md";
 import {
   AppstoreOutlined,
@@ -37,6 +38,11 @@ export default function Header({ isAdmin }) {
       label: <a href="/">{"Home"}</a>,
       key: "home",
       icon: <HomeFilled />,
+    },
+    {
+      label: <a href="/cours">{"Cours"}</a>,
+      key: "cours",
+      icon: <GiTennisRacket />,
     },
     ...(isAdmin
       ? [

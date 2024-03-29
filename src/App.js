@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AppContextProvider, { useAppContext } from "./Context/AppContext";
 import Header from "./Header/Header";
 import Home from "./Home/Home";
 import Gestion from "./Gestion/Gestion";
@@ -10,7 +11,7 @@ import SearchUser from "./SearchUser/SearchUser";
 import AddUser from "./AddUser/AddUser";
 import Login from "./Login/Login";
 import CreateUser from "./CreateUser/CreateUser";
-import AppContextProvider, { useAppContext } from "./Context/AppContext";
+import DisplayCours from "./DisplayCours/DisplayCours";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ function AppContent() {
       <Routes>
         {isLoggedIn && <Route path="/" element={<Home />} />}
         {isLoggedIn && <Route path="/home" element={<Home />} />}
+        {isLoggedIn && <Route path="/cours" element={<DisplayCours />} />}
         {isAdmin && <Route path="/gestion" element={<Gestion />} />}
         {isAdmin && <Route path="/delete-user" element={<DeleteUser />} />}
         {isAdmin && <Route path="/edit-user" element={<EditUser />} />}
