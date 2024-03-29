@@ -15,6 +15,7 @@ if (!empty($requestData->values)) {
     if (!empty($values->username) && !empty($values->password)) {
         $username = $values->username;
         $password = $values->password;
+        $type = "adhérent"; // Ajout du type "adhérent"
 
         $nomAdh = $values->nomAdh;
         $prenomAdh = $values->prenomAdh;
@@ -22,7 +23,8 @@ if (!empty($requestData->values)) {
         $villeAdh = $values->villeAdh;
         $cpAdh = $values->cpAdh;
         $niveauAdh = $values->niveauAdh;
-        $typeAdh = "adhérent"; // Ajout du type "adhérent"
+        $dateAdh = $values->dateAdh;
+        $typeAdh = $values->typeAdh;
 
         $mysqli = new mysqli("127.0.0.1", "root", "", "badminton");
 
@@ -31,14 +33,14 @@ if (!empty($requestData->values)) {
             exit;
         }
 
-        $adhRequest = $mysqli->prepare('INSERT INTO adherents (nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $adhRequest->bind_param('sssssss', $nomAdh, $prenomAdh, $adresseAdh, $villeAdh, $cpAdh, $niveauAdh, $typeAdh);
+        $adhRequest = $mysqli->prepare('INSERT INTO adherents (nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh, dateAdh) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $adhRequest->bind_param('ssssssss', $nomAdh, $prenomAdh, $adresseAdh, $villeAdh, $cpAdh, $niveauAdh, $typeAdh, $dateAdh);
         $adhRequest->execute();
 
         $adherentId = $mysqli->insert_id;
 
         $userRequest = $mysqli->prepare('INSERT INTO users (username, password, idAdh, type) VALUES (?, ?, ?, ?)');
-        $userRequest->bind_param('ssis', $username, $password, $adherentId, $typeAdh);
+        $userRequest->bind_param('ssis', $username, $password, $adherentId, $type);
         $userRequest->execute();
 
         if ($userRequest->affected_rows > 0) {

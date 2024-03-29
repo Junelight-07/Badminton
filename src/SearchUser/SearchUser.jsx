@@ -49,7 +49,7 @@ export default function SearchUser() {
         </Form.Item>
       </Form>
 
-      {searchResult.length && (
+      {searchResult?.length ? (
         <List>
           <VirtualList data={searchResult} itemHeight={47} itemKey="idAdh">
             {(item, index) => (
@@ -75,12 +75,14 @@ export default function SearchUser() {
                   }}
                   type="primary"
                 >
-                  Modifier
+                  {"Modifier"}
                 </Button>
               </List.Item>
             )}
           </VirtualList>
         </List>
+      ):(
+        <div>{"Cet adhérent n'existe pas mon cher !"}</div>
       )}
     </>
   );

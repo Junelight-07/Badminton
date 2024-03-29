@@ -6,7 +6,7 @@ import Home from "./Home/Home";
 import Gestion from "./Gestion/Gestion";
 import DeleteUser from "./DeleteUser/DeleteUser";
 import EditUser from "./EditUser/EditUser";
-import UserDetails from "./DisplayUser/DisplayUser";
+import DetailsUser from "./DetailsUser/DetailsUser";
 import SearchUser from "./SearchUser/SearchUser";
 import AddUser from "./AddUser/AddUser";
 import Login from "./Login/Login";
@@ -34,7 +34,7 @@ function AppContent() {
         {isAdmin && <Route path="/gestion" element={<Gestion />} />}
         {isAdmin && <Route path="/delete-user" element={<DeleteUser />} />}
         {isAdmin && <Route path="/edit-user" element={<EditUser />} />}
-        {isAdmin && <Route path="/details-user" element={<UserDetails />} />}
+        {isAdmin && <Route path="/details-user" element={<DetailsUser />} />}
         {isAdmin && <Route path="/search-user" element={<SearchUser />} />}
         {isAdmin && <Route path="/add-user" element={<AddUser />} />}
         <Route path="/login" element={<Login />} />

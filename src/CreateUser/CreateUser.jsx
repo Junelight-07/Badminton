@@ -4,6 +4,11 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreateUser.module.scss";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import { format } from "date-fns";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const { Option } = Select;
 
@@ -15,6 +20,12 @@ export default function CreateUser() {
   const captchaRef = useRef(null);
   const niveaux = ["Débutant", "Intermédiaire", "Expert"];
   const types = ["Étudiant", "Salarié", "Retraité"];
+  const dateFormat = "DD-MM-YYYY";
+  const currentYear = new Date().getFullYear();
+  const currentDate = format(new Date(), "dd-MM");
+  const yearFiveAgo = currentYear - 5;
+  const yearHundredAgo = currentYear - 100;
+
   const formItemLayout = {
     labelCol: {
       xs: {
@@ -88,7 +99,6 @@ export default function CreateUser() {
             maxWidth: 600,
           }}
           scrollToFirstError
-          initialValues={{ niveauAdh: niveaux[0] }}
         >
           <Form.Item
             className={styles.item}
@@ -106,8 +116,8 @@ export default function CreateUser() {
                   }
                   return Promise.reject(
                     new Error(
-                      "The new password that you entered could not be admin!",
-                    ),
+                      "The new password that you entered could not be admin!"
+                    )
                   );
                 },
               }),
@@ -154,9 +164,7 @@ export default function CreateUser() {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error(
-                      "The new password that you entered do not match!",
-                    ),
+                    new Error("The new password that you entered do not match!")
                   );
                 },
               }),
@@ -169,14 +177,7 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            required
-            label="Nom"
-            name="nomAdh"
-            rules={[{ required: true, message: "Veuillez entrer un nom" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
+            className={styles.item}
             required
             label="Prénom"
             name="prenomAdh"
@@ -185,6 +186,36 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
+            className={styles.item}
+            required
+            label="Nom"
+            name="nomAdh"
+            rules={[{ required: true, message: "Veuillez entrer un nom" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            className={styles.item}
+            required
+            label="Date de naissance"
+            name="dateAdh"
+            rules={[
+              {
+                required: true,
+                message: "Veuillez entrer votre date de naissance",
+              },
+            ]}
+          >
+            <DatePicker
+              placeholder="Choisir une date"
+              format={"DD-MM-YYYY"}
+              defaultValue={dayjs(`${currentDate}-${yearFiveAgo}`, dateFormat)}
+              minDate={dayjs(`01-01-${yearHundredAgo}`, dateFormat)}
+              maxDate={dayjs(`31-12-${yearFiveAgo}`, dateFormat)}
+            />
+          </Form.Item>
+          <Form.Item
+            className={styles.item}
             required
             label="Adresse"
             name="adresseAdh"
@@ -193,6 +224,7 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
+            className={styles.item}
             required
             label="Ville"
             name="villeAdh"
@@ -201,6 +233,7 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
+            className={styles.item}
             required
             label="Code Postal"
             name="cpAdh"
@@ -239,7 +272,6 @@ export default function CreateUser() {
             rules={[{ required: true, message: "Veuillez entrer un type" }]}
           >
             <Select
-              placeholder={"Please select a type"}
               options={types.map((type) => ({
                 label: type,
                 value: type,
@@ -249,6 +281,7 @@ export default function CreateUser() {
               }}
             />
           </Form.Item>
+
           {/*<Form.Item*/}
           {/*  name="gender"*/}
           {/*  label="Gender"*/}
