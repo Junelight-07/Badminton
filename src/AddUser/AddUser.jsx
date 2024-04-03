@@ -1,8 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Button, Form, Input, message, Select } from "antd";
-import { DatePicker } from "antd";
+import { Button, DatePicker, Form, Input, message, Select } from "antd";
 import dayjs from "dayjs";
 import { format } from "date-fns";
 
@@ -17,6 +16,7 @@ export default function AddUser() {
   const yearHundredAgo = currentYear - 100;
 
   const onFinish = (values) => {
+    values.dateAdhesionAdh = format(new Date(), "yyyy-MM-dd");
     axios
       .put(`http://127.0.0.1/badminton/src/PHP/add-user.php`, values)
       .then((res) => {

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $requestData = json_decode(file_get_contents('php://input'), true);
 
-if (empty($requestData['nomAdh']) || empty($requestData['prenomAdh']) || empty($requestData['adresseAdh']) || empty($requestData['villeAdh']) || empty($requestData['cpAdh']) || empty($requestData['niveauAdh']) || empty($requestData['typeAdh'])) {
+if (empty($requestData['nomAdh']) || empty($requestData['prenomAdh']) || empty($requestData['adresseAdh']) || empty($requestData['villeAdh']) || empty($requestData['cpAdh']) || empty($requestData['niveauAdh']) || empty($requestData['dateAdhesionAdh']) || empty($requestData['typeAdh'])) {
     echo json_encode(array("status" => "error", "message" => "Erreur dans la saisie"));
     exit;
 }
@@ -22,6 +22,7 @@ $ville = $requestData['villeAdh'];
 $cp = $requestData['cpAdh'];
 $nivAdh = $requestData['niveauAdh'];
 $typeAdh = $requestData['typeAdh'];
+$dateAdhesionAdh = $requestData['dateAdhesionAdh'];
 
 $mysqli = mysqli_connect("127.0.0.1", "root", "", "badminton");
 
@@ -30,10 +31,10 @@ if (!$mysqli) {
     exit;
 }
 
-$query = "INSERT INTO adherents(idAdh, nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO adherents(idAdh, nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh, dateAdhesionAdh) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 if ($stmt = mysqli_prepare($mysqli, $query)) {
-    mysqli_stmt_bind_param($stmt, "ssssiss", $nom, $prenom, $adresse, $ville, $cp, $nivAdh, $typeAdh);
+    mysqli_stmt_bind_param($stmt, "ssssisss", $nom, $prenom, $adresse, $ville, $cp, $nivAdh, $typeAdh, $dateAdhesionAdh);
 
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(array("status" => "success"));
