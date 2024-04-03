@@ -15,7 +15,8 @@ if (!empty($requestData->values)) {
     if (!empty($values->username) && !empty($values->password)) {
         $username = $values->username;
         $password = $values->password;
-        $type = "adhérent"; // Ajout du type "adhérent"
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $type = "adhérent";
 
         $nomAdh = $values->nomAdh;
         $prenomAdh = $values->prenomAdh;
@@ -25,22 +26,22 @@ if (!empty($requestData->values)) {
         $niveauAdh = $values->niveauAdh;
         $dateAdh = $values->dateAdh;
         $typeAdh = $values->typeAdh;
+        $dateAdhesionAdh = $values->dateAdhesionAdh;
 
         $mysqli = new mysqli("127.0.0.1", "root", "", "badminton");
-
         if ($mysqli->connect_error) {
             echo json_encode(array("status" => "error", "message" => "Erreur de connexion à la base de données: " . $mysqli->connect_error));
             exit;
         }
 
-        $adhRequest = $mysqli->prepare('INSERT INTO adherents (nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh, dateAdh) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $adhRequest->bind_param('ssssssss', $nomAdh, $prenomAdh, $adresseAdh, $villeAdh, $cpAdh, $niveauAdh, $typeAdh, $dateAdh);
+        $adhRequest = $mysqli->prepare('INSERT INTO adherents (nomAdh, prenomAdh, adresseAdh, villeAdh, cpAdh, niveauAdh, typeAdh, dateAdh, dateAdhesionAdh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $adhRequest->bind_param('sssssssss', $nomAdh, $prenomAdh, $adresseAdh, $villeAdh, $cpAdh, $niveauAdh, $typeAdh, $dateAdh, $dateAdhesionAdh);
         $adhRequest->execute();
 
         $adherentId = $mysqli->insert_id;
 
         $userRequest = $mysqli->prepare('INSERT INTO users (username, password, idAdh, type) VALUES (?, ?, ?, ?)');
-        $userRequest->bind_param('ssis', $username, $password, $adherentId, $type);
+        $userRequest->bind_param('ssis', $username, $hashedPassword, $adherentId, $type);
         $userRequest->execute();
 
         if ($userRequest->affected_rows > 0) {

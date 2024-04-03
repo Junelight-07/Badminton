@@ -14,12 +14,9 @@ export default function Login() {
         username: values.username,
         password: values.password,
       })
-      .then(async (res) => {
-        console.log("res", res);
+      .then((res) => {
         if (res.status === 200) {
-          if (res.data.token) {
-            await localStorage.setItem("token", res.data.token);
-          }
+          localStorage.setItem("token", res.data.token);
           navigate("/home");
         } else {
           setError(res.data.message);
