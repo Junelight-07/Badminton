@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Calendar } from "antd";
+import { Badge, Calendar, List, Modal } from "antd";
 import axios from "axios";
+import VirtualList from "rc-virtual-list";
 
 export default function DisplayCours() {
   const [courseData, setCourseData] = useState({});
+  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const ContainerHeight = 400;
+
   const transformCourses = (courses) => {
     const transformedData = {};
     courses.forEach((course) => {
@@ -13,9 +18,10 @@ export default function DisplayCours() {
       }
       transformedData[date].push({
         type: "success",
-        content: course.nomCours,
+        cours: course.nomCours,
         id: course.idCours,
-        professeur: course.idProfesseur,
+        prenomProf: course.prenomProfesseur,
+        nomProf: course.nomProfesseur,
       });
     });
     return transformedData;
@@ -28,7 +34,6 @@ export default function DisplayCours() {
           "http://127.0.0.1/badminton/src/PHP/cours.php",
         );
         const transformedCourses = transformCourses(response.data);
-        console.log("courseData", response.data);
         setCourseData(transformedCourses);
       } catch (error) {
         console.error(
@@ -37,7 +42,6 @@ export default function DisplayCours() {
         );
       }
     };
-
     fetchCourses();
   }, []);
 
@@ -45,13 +49,13 @@ export default function DisplayCours() {
     const date = value.format("ddd MMM DD YYYY");
     return courseData[date] || [];
   };
+
   const dateCellRender = (value) => {
     const listData = getListData(value);
-    console.log("listData", listData);
     return (
       <ul className="events">
         {listData.map((item) => (
-          <Badge key={item.id} status={item.type} text={item.content} />
+          <Badge key={item.id} status={item.type} text={item.cours} />
         ))}
       </ul>
     );
@@ -62,9 +66,50 @@ export default function DisplayCours() {
     if (info.type === "month") return <div>EMPTY</div>;
   };
 
+  const onDateSelect = (value) => {
+    const date = value.format("ddd MMM DD YYYY");
+    const newData = courseData[date] || [];
+    if (newData?.length > 0) {
+      setModalData(newData);
+      setIsModalOpened(true);
+    }
+  };
+
+  const handleOk = () => {
+    setIsModalOpened(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpened(false);
+  };
+
   return (
     <div style={{ padding: "20px" }}>
-      <Calendar cellRender={cellRender} />
+      <Calendar cellRender={cellRender} onSelect={onDateSelect} />
+      <Modal
+        title="Cours du jour"
+        open={isModalOpened}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <List>
+          <VirtualList
+            data={modalData}
+            height={ContainerHeight}
+            itemHeight={47}
+            itemKey="email"
+          >
+            {(item) => (
+              <List.Item key={item.id}>
+                <List.Item.Meta
+                  title={item.cours}
+                  description={`${item.prenomProf} ${item.nomProf}`}
+                />
+              </List.Item>
+            )}
+          </VirtualList>
+        </List>
+      </Modal>
     </div>
   );
 }
