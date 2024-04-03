@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Header/Header";
 import DonutsUser from "./DonutsUser/DonutsUser";
@@ -10,7 +11,7 @@ import SearchUser from "./SearchUser/SearchUser";
 import AddUser from "./AddUser/AddUser";
 import DisplayCours from "./DisplayCours/DisplayCours";
 import Login from "./Login/Login";
-import AppContextProvider, { useAppContext } from "./Context/AppContext";
+import AppContextProvider from "./Context/AppContext";
 import CreateUser from "./CreateUser/CreateUser";
 import Home from "./Home/Home";
 
@@ -23,7 +24,17 @@ export default function App() {
 }
 
 function AppContent() {
-  const { isLoggedIn, isAdmin } = useAppContext();
+  const token = localStorage.getItem("token");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setIsLoggedIn(!!decodedToken);
+      setIsAdmin(decodedToken?.type === "administrateur");
+    }
+  }, [token]);
 
   return (
     <BrowserRouter>

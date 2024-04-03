@@ -18,6 +18,7 @@ export default function Login() {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           navigate("/home");
+          window.location.reload();
         } else {
           setError(res.data.message);
         }
