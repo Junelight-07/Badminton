@@ -17,7 +17,7 @@ export default function Login() {
       .then((res) => {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
-          navigate("/home");
+          navigate("/donuts-user");
           window.location.reload();
         } else {
           setError(res.data.message);
