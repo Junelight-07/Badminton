@@ -8,6 +8,7 @@ import EditUser from "./EditUser/EditUser";
 import DetailsUser from "./DetailsUser/DetailsUser";
 import SearchUser from "./SearchUser/SearchUser";
 import AddUser from "./AddUser/AddUser";
+import DisplayCours from "./DisplayCours/DisplayCours";
 import Login from "./Login/Login";
 import AppContextProvider, { useAppContext } from "./Context/AppContext";
 import CreateUser from "./CreateUser/CreateUser";
@@ -31,6 +32,7 @@ function AppContent() {
 				<Route path="/" element={<Home />} />
 				<Route path="/home" element={<Home />} />
 				{isLoggedIn && <Route path="/donuts-user" element={<DonutsUser />} />}
+				{isLoggedIn && <Route path="/cours" element={<DisplayCours />} />}
 				{isAdmin && <Route path="/gestion" element={<Gestion />} />}
 				{isAdmin && <Route path="/delete-user" element={<DeleteUser />} />}
 				{isAdmin && <Route path="/edit-user" element={<EditUser />} />}
