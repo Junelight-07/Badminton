@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Calendar, List, Modal } from "antd";
+import { Badge, Button, Calendar, List, message, Modal } from "antd";
 import axios from "axios";
 import VirtualList from "rc-virtual-list";
+import { jwtDecode } from "jwt-decode";
 
 export default function DisplayCours() {
   const [courseData, setCourseData] = useState({});
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const token = localStorage.getItem("token");
+  const [idAdh, setIdAdh] = useState(null);
   const ContainerHeight = 400;
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setIdAdh(decodedToken.idAdh);
+    }
+  }, [token]);
 
   const transformCourses = (courses) => {
     const transformedData = {};
@@ -44,6 +54,27 @@ export default function DisplayCours() {
     };
     fetchCourses();
   }, []);
+
+  const reserveCourse = async (idCours, idAdherent) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1/badminton/src/PHP/reserver-cours.php",
+        {
+          idCours: idCours,
+          idAdh: idAdherent,
+        },
+      );
+
+      if (response.data.status === "success") {
+        message.success(response.data.message);
+      } else if (response.data.status === "error") {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la réservation du cours :", error);
+      message.error("Erreur lors de la réservation du cours");
+    }
+  };
 
   const getListData = (value) => {
     const date = value.format("ddd MMM DD YYYY");
@@ -105,6 +136,12 @@ export default function DisplayCours() {
                   title={item.cours}
                   description={`${item.prenomProf} ${item.nomProf}`}
                 />
+                <Button
+                  type="primary"
+                  onClick={() => reserveCourse(item.id, idAdh)}
+                >
+                  {"Je réserve"}
+                </Button>
               </List.Item>
             )}
           </VirtualList>
