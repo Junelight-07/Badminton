@@ -32,6 +32,7 @@ export default function DisplayCours() {
         id: course.idCours,
         prenomProf: course.prenomProfesseur,
         nomProf: course.nomProfesseur,
+        registeredMembers: course.registeredMembers,
       });
     });
     return transformedData;
@@ -150,7 +151,14 @@ export default function DisplayCours() {
               <List.Item key={item.id}>
                 <List.Item.Meta
                   title={item.cours}
-                  description={`${item.prenomProf} ${item.nomProf}`}
+                  description={`Professeur:\n${item.prenomProf} ${
+                    item.nomProf
+                  }\nInscrits:\n${
+                    item.registeredMembers
+                      ? item.registeredMembers.join(", ")
+                      : ""
+                  }`}
+                  style={{ whiteSpace: "pre-line" }}
                 />
                 <Space>
                   <Button
