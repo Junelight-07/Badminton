@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button, Calendar, List, message, Modal } from "antd";
+import { Badge, Button, Calendar, List, message, Modal, Space } from "antd";
 import axios from "axios";
 import VirtualList from "rc-virtual-list";
 import { jwtDecode } from "jwt-decode";
@@ -76,6 +76,22 @@ export default function DisplayCours() {
     }
   };
 
+  const cancelCourse = async (idCours, idAdherent) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1/badminton/src/PHP/cancel-cours.php?idCours=${idCours}&idAdh=${idAdherent}`,
+      );
+      if (response.data.status === "success") {
+        message.success(response.data.message);
+      } else if (response.data.status === "error") {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la désinscription du cours :", error);
+      message.error("Erreur lors de la désinscription du cours");
+    }
+  };
+
   const getListData = (value) => {
     const date = value.format("ddd MMM DD YYYY");
     return courseData[date] || [];
@@ -136,12 +152,17 @@ export default function DisplayCours() {
                   title={item.cours}
                   description={`${item.prenomProf} ${item.nomProf}`}
                 />
-                <Button
-                  type="primary"
-                  onClick={() => reserveCourse(item.id, idAdh)}
-                >
-                  {"Je réserve"}
-                </Button>
+                <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => reserveCourse(item.id, idAdh)}
+                  >
+                    {"Je réserve"}
+                  </Button>
+                  <Button onClick={() => cancelCourse(item.id, idAdh)}>
+                    {"Je me désinscris"}
+                  </Button>
+                </Space>
               </List.Item>
             )}
           </VirtualList>
