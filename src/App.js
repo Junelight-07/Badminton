@@ -14,6 +14,7 @@ import Login from "./Login/Login";
 import AppContextProvider from "./Context/AppContext";
 import CreateUser from "./CreateUser/CreateUser";
 import Home from "./Home/Home";
+import Agreement from "./Agreement/Agreement";
 
 export default function App() {
   return (
@@ -52,6 +53,7 @@ function AppContent() {
         {isAdmin && <Route path="/add-user" element={<AddUser />} />}
         <Route path="/login" element={<Login />} />
         <Route path="/create-user" element={<CreateUser />} />
+        <Route path="/agreement" element={<Agreement />} />
         {/* <Route path="*" element={<Navigate to="/login" />} /> */}
       </Routes>
       {/*<Footer />*/}

@@ -125,8 +125,8 @@ export default function CreateUser() {
                   }
                   return Promise.reject(
                     new Error(
-                      "The new user that you entered could not be admin!",
-                    ),
+                      "The new user that you entered could not be admin!"
+                    )
                   );
                 },
               }),
@@ -171,9 +171,7 @@ export default function CreateUser() {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error(
-                      "The new password that you entered do not match!",
-                    ),
+                    new Error("The new password that you entered do not match!")
                   );
                 },
               }),
@@ -331,7 +329,7 @@ export default function CreateUser() {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              {"I have read the "} <a href="">{"agreement"}</a>
+              {"I have read the "} <a href="/agreement">{"agreement"}</a>
             </Checkbox>
           </Form.Item>
 
