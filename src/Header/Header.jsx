@@ -58,7 +58,10 @@ export default function Header({ isAdmin }) {
               <a href="/search-user">{"Rechercher un adhérant"}</a>,
               "searchUser",
             ),
-            getItem(<a href="/add-user">{"Ajouter un adhérant"}</a>, "addUser"),
+            getItem(
+              <a href="/add-user">{"Ajouter un utilisateur"}</a>,
+              "addUser",
+            ),
           ]),
         ]
       : []),

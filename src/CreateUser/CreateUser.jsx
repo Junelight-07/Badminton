@@ -12,7 +12,6 @@ import {
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "./CreateUser.module.scss";
 import dayjs from "dayjs";
 import { format } from "date-fns";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -25,7 +24,6 @@ export default function CreateUser() {
   const navigate = useNavigate();
   const location = useLocation();
   const [form] = Form.useForm();
-  const [error, setError] = useState("");
   const [captchaValue, setCaptchaValue] = useState(null);
   const captchaRef = useRef(null);
   const niveaux = ["Débutant", "Intermédiaire", "Expert"];
@@ -80,12 +78,12 @@ export default function CreateUser() {
         } else if (res.data.status === "error") {
           message.error(res.data.message);
         } else {
-          setError("Invalid credentials");
+          message.error("Invalid data");
         }
       })
       .catch((err) => {
-        setError("An error occurred while trying to log in");
-        if (err.request.response) setError("Invalid credentials");
+        message.error("An error occurred while trying to create the user");
+        if (err.request.response) message.error("Invalid data");
       });
   };
 
@@ -102,7 +100,6 @@ export default function CreateUser() {
         <h2 style={{ textAlign: "center" }}>{"Register Page"}</h2>
         <Form
           initialValues={{ typeAdh: type }}
-          className={styles.form}
           {...formItemLayout}
           form={form}
           name="register"
@@ -114,7 +111,6 @@ export default function CreateUser() {
           scrollToFirstError
         >
           <Form.Item
-            className={styles.item}
             name="username"
             label="Username"
             rules={[
@@ -143,7 +139,6 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             name="password"
             label="Password"
             rules={[
@@ -161,7 +156,6 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             name="confirm"
             label="Confirm Password"
             dependencies={["password"]}
@@ -192,7 +186,6 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Prénom"
             name="prenomAdh"
@@ -201,7 +194,6 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Nom"
             name="nomAdh"
@@ -210,7 +202,6 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Date de naissance"
             name="dateAdh"
@@ -230,7 +221,6 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Adresse"
             name="adresseAdh"
@@ -239,7 +229,6 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Ville"
             name="villeAdh"
@@ -248,7 +237,6 @@ export default function CreateUser() {
             <Input />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Code Postal"
             name="cpAdh"
@@ -263,7 +251,6 @@ export default function CreateUser() {
             <Input type="number" min={0} max={99999} maxLength={5} />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Niveau"
             name="niveauAdh"
@@ -280,7 +267,6 @@ export default function CreateUser() {
             />
           </Form.Item>
           <Form.Item
-            className={styles.item}
             required
             label="Type"
             name="typeAdh"
