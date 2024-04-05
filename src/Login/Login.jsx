@@ -14,13 +14,11 @@ export default function Login() {
         username: values.username,
         password: values.password,
       })
-      .then(async (res) => {
-        console.log("res", res);
+      .then((res) => {
         if (res.status === 200) {
-          if (res.data.token) {
-            await localStorage.setItem("token", res.data.token);
-          }
-          navigate("/home");
+          localStorage.setItem("token", res.data.token);
+          navigate("/donuts-user");
+          window.location.reload();
         } else {
           setError(res.data.message);
         }

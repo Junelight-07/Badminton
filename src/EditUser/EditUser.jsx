@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Form, Input, message, Select } from "antd";
-import { DatePicker } from "antd";
+import { Button, DatePicker, Form, Input, message, Select } from "antd";
 import dayjs from "dayjs";
 import { format } from "date-fns";
 
@@ -41,7 +40,7 @@ export default function EditUser() {
     axios
       .put(
         `http://127.0.0.1/badminton/src/PHP/edit-user.php?id=${id}`,
-        changedValues
+        changedValues,
       )
       .then((res) => {
         if (res.status === 200) {
