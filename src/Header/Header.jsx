@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Menu } from "antd";
 import { FaUser } from "react-icons/fa";
-import { MdAnalytics, MdLogout } from "react-icons/md";
+import { MdAnalytics, MdLogin, MdLogout } from "react-icons/md";
 import { GiTennisRacket } from "react-icons/gi";
 import {
   AppstoreOutlined,
@@ -13,15 +13,20 @@ import { useNavigate } from "react-router-dom";
 
 Header.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
-export default function Header({ isAdmin }) {
+export default function Header({ isAdmin, isLoggedIn }) {
   const navigate = useNavigate();
   const [current, setCurrent] = useState("mail");
 
-  const onButtonClick = () => {
+  const onDecoButtonClick = () => {
     localStorage.removeItem("token");
     navigate("/login");
     window.location.reload();
+  };
+
+  const onCoButtonClick = () => {
+    navigate("/login");
   };
 
   function getItem(label, key, icon, children, type) {
@@ -40,27 +45,31 @@ export default function Header({ isAdmin }) {
       key: "home",
       icon: <HomeFilled />,
     },
-    {
-      label: <a href="/donuts-user">{"Donuts"}</a>,
-      key: "donuts",
-      icon: <MdAnalytics />,
-    },
-    {
-      label: <a href="/cours">{"Cours"}</a>,
-      key: "cours",
-      icon: <GiTennisRacket />,
-    },
+    ...(isLoggedIn
+      ? [
+          {
+            label: <a href="/donuts-user">{"Donuts"}</a>,
+            key: "donuts",
+            icon: <MdAnalytics />,
+          },
+          {
+            label: <a href="/cours">{"Cours"}</a>,
+            key: "cours",
+            icon: <GiTennisRacket />,
+          },
+        ]
+      : []),
     ...(isAdmin
       ? [
           getItem(<a href="/gestion">{"Gestion"}</a>, "gestion", <FaUser />, [
             getItem(<a href="/gestion">{"Liste des adhérants"}</a>, "userList"),
             getItem(
               <a href="/search-user">{"Rechercher un adhérant"}</a>,
-              "searchUser",
+              "searchUser"
             ),
             getItem(
               <a href="/add-user">{"Ajouter un utilisateur"}</a>,
-              "addUser",
+              "addUser"
             ),
           ]),
         ]
@@ -121,14 +130,25 @@ export default function Header({ isAdmin }) {
         mode="horizontal"
         items={items}
       />
-      <Button
-        type="primary"
-        shape="round"
-        icon={<MdLogout />}
-        onClick={onButtonClick}
-      >
-        {"Déconnexion"}
-      </Button>
+      {isLoggedIn ? (
+        <Button
+          type="primary"
+          shape="round"
+          icon={<MdLogout />}
+          onClick={onDecoButtonClick}
+        >
+          {"Se déconnecter"}
+        </Button>
+      ) : (
+        <Button
+          type="primary"
+          shape="round"
+          icon={<MdLogin />}
+          onClick={onCoButtonClick}
+        >
+          {"Se connecter"}
+        </Button>
+      )}
     </header>
   );
 }

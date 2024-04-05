@@ -38,7 +38,7 @@ function AppContent() {
 
   return (
     <BrowserRouter>
-      {isLoggedIn && <Header isAdmin={isAdmin} />}
+      {<Header isAdmin={isAdmin} isLoggedIn={isLoggedIn} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -52,7 +52,7 @@ function AppContent() {
         {isAdmin && <Route path="/add-user" element={<AddUser />} />}
         <Route path="/login" element={<Login />} />
         <Route path="/create-user" element={<CreateUser />} />
-        {/*<Route path="*" element={<Navigate to="/login" />} />*/}
+        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
       </Routes>
       {/*<Footer />*/}
     </BrowserRouter>
