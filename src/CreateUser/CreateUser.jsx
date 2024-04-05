@@ -329,7 +329,7 @@ export default function CreateUser() {
             {...tailFormItemLayout}
           >
             <Checkbox>
-              {"J'ai bien lu et j'accepte la"}{" "}
+              {"J'ai bien lu et j'accepte la "}
               <a href="/agreement">{"politique de protection des données"}</a>
             </Checkbox>
           </Form.Item>
