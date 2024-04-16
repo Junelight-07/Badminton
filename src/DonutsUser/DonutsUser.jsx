@@ -18,14 +18,14 @@ export default function MyComponent() {
 
 	function renderTypeDonut(d) {
 		let counts = {};
-		d.map((item) => {
+		d?.map((item) => {
 			if (!counts[item.typeAdh]) {
 				counts[item.typeAdh] = 0;
 			}
 			counts[item.typeAdh]++;
 		});
 
-		const chartData = Object.entries(counts).map(([key, value]) => ({
+		const chartData = Object.entries(counts)?.map(([key, value]) => ({
 			value,
 			label: `${key}`,
 		}));
@@ -35,14 +35,14 @@ export default function MyComponent() {
 
 	function renderNiveauDonut(d) {
 		let counts = {};
-		d.map((item) => {
+		d?.map((item) => {
 			if (!counts[item.niveauAdh]) {
 				counts[item.niveauAdh] = 0;
 			}
 			counts[item.niveauAdh]++;
 		});
 
-		const chartData = Object.entries(counts).map(([key, value]) => ({
+		const chartData = Object.entries(counts)?.map(([key, value]) => ({
 			value,
 			label: `${key}`,
 		}));

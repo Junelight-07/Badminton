@@ -35,6 +35,7 @@ if (!empty($requestData->username) && !empty($requestData->password)) {
         $payload = array(
             "idUser" => $user['idUser'],
             "idAdh" => $user['idAdh'],
+            "idProf" => $user['idProf'],
             "type" => $user['type'],
             "exp" => time() + (60 * 60) // expires in 1 hour
         );

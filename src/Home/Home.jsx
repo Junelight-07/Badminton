@@ -23,7 +23,7 @@ export default function Home() {
 		<>
 			<div className={styles.container}>
 				<p className={styles.AnimText}>
-					BADMINTON <br /> LES PINGOUINS ACROBATIQUES
+					BADMINTON <br />
 				</p>
 			</div>
 
