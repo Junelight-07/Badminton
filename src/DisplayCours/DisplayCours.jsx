@@ -13,114 +13,63 @@ export default function DisplayCours({ idAdh }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [modalData, setModalData] = useState([]);
-  const ContainerHeight = 400;
-
-  const transformCourses = (courses) => {
-    const transformedData = {};
-    courses.forEach((course) => {
-      const date = new Date(course.datetime).toDateString();
-      const heureCours = new Date(course.datetime).toLocaleTimeString();
-      if (!transformedData[date]) {
-        transformedData[date] = [];
-      }
-      transformedData[date].push({
-        type: "success",
-        cours: course.nomCours,
-        id: course.idCours,
-        prenomProf: course.prenomProfesseur,
-        nomProf: course.nomProfesseur,
-        registeredMembers: course.registeredMembers,
-        heure: heureCours,
-      });
-    });
-    return transformedData;
-  };
 
   const fetchCourses = async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1/badminton/src/PHP/cours.php",
-      );
-      const transformedCourses = transformCourses(response.data);
-      setCourseData(transformedCourses);
-      return transformedCourses;
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des données des cours :",
-        error,
-      );
-    }
+    const response = await axios.get(
+      "http://127.0.0.1/badminton/src/PHP/cours.php",
+    );
+    const transformedData = response.data.reduce((acc, course) => {
+      const date = new Date(course.datetime).toDateString();
+      const heureCours = new Date(course.datetime).toLocaleTimeString();
+      acc[date] = acc[date] || [];
+      acc[date].push({
+        ...course,
+        type: "success",
+        heure: heureCours,
+      });
+      return acc;
+    }, {});
+    setCourseData(transformedData);
+    return transformedData;
   };
 
   useEffect(() => {
     fetchCourses();
   }, []);
 
-  const reserveCourse = async (idCours, idAdherent) => {
+  const handleCourse = async (idCours, idAdherent, url, errorMessage) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1/badminton/src/PHP/reserver-cours.php",
-        {
-          idCours: idCours,
-          idAdh: idAdherent,
-        },
-      );
-
+      const response = await axios.post(url, { idCours, idAdh: idAdherent });
       if (response.data.status === "success") {
         message.success(response.data.message);
         const updatedCourses = await fetchCourses();
         if (selectedDate) {
           setModalData(updatedCourses[selectedDate] || []);
         }
-      } else if (response.data.status === "error") {
+      } else {
         message.error(response.data.message);
       }
     } catch (error) {
-      console.error("Erreur lors de la réservation du cours :", error);
-      message.error("Erreur lors de la réservation du cours");
+      console.error(errorMessage, error);
+      message.error(errorMessage);
     }
   };
 
-  const cancelCourse = async (idCours, idAdherent) => {
-    try {
-      const response = await axios.delete(
-        `http://127.0.0.1/badminton/src/PHP/cancel-cours.php?idCours=${idCours}&idAdh=${idAdherent}`,
-      );
-      if (response.data.status === "success") {
-        message.success(response.data.message);
-        const updatedCourses = await fetchCourses();
-        if (selectedDate) {
-          setModalData(updatedCourses[selectedDate] || []);
-        }
-      } else if (response.data.status === "error") {
-        message.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la désinscription du cours :", error);
-      message.error("Erreur lors de la désinscription du cours");
-    }
-  };
-
-  const getListData = (value) => {
-    const date = value.format("ddd MMM DD YYYY");
-    return courseData[date] || [];
-  };
-
-  const dateCellRender = (value) => {
-    const listData = getListData(value);
-    return (
-      <ul className="events">
-        {listData?.map((item) => (
-          <Badge key={item.id} status={item.type} text={item.cours} />
-        ))}
-      </ul>
+  const reserveCourse = (idCours, idAdherent) =>
+    handleCourse(
+      idCours,
+      idAdherent,
+      "http://127.0.0.1/badminton/src/PHP/reserver-cours.php",
+      "Une erreur est survenue durant la réservation du cours",
     );
-  };
 
-  const cellRender = (current, info) => {
-    if (info.type === "date") return dateCellRender(current);
-    if (info.type === "month") return <div>EMPTY</div>;
-  };
+  const cancelCourse = (idCours, idAdherent) =>
+    handleCourse(
+      idCours,
+      idAdherent,
+      `http://127.0.0.1/badminton/src/PHP/cancel-cours.php`,
+      "Une erreur est survenue durant la désinscription du cours",
+    );
 
   const onDateSelect = (value) => {
     const date = value.format("ddd MMM DD YYYY");
@@ -132,36 +81,44 @@ export default function DisplayCours({ idAdh }) {
     }
   };
 
-  const handleOk = () => {
-    setIsModalOpened(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpened(false);
-  };
+  const handleModal = () => setIsModalOpened(false);
 
   return (
     <div style={{ padding: "20px" }}>
-      <Calendar cellRender={cellRender} onSelect={onDateSelect} />
+      <Calendar
+        dateCellRender={(value) => {
+          const date = value.format("ddd MMM DD YYYY");
+          const dataList = courseData[date] || [];
+          console.log("dataList", dataList);
+          return (
+            <ul className="events">
+              {dataList?.map((item) => (
+                <Badge key={item.id} status={item.type} text={item.nomCours} />
+              ))}
+            </ul>
+          );
+        }}
+        onSelect={onDateSelect}
+      />
       <Modal
         title="Cours du jour"
-        open={isModalOpened}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        visible={isModalOpened}
+        onOk={handleModal}
+        onCancel={handleModal}
       >
         <List>
           <VirtualList
             data={modalData}
-            height={ContainerHeight}
+            height={400}
             itemHeight={47}
             itemKey="email"
           >
             {(item) => (
               <List.Item key={item.id}>
                 <List.Item.Meta
-                  title={`${item.cours} : ${item.heure}`}
-                  description={`Professeur:\n${item.prenomProf} ${
-                    item.nomProf
+                  title={`${item.nomCours} : ${item.heure}`}
+                  description={`Professeur:\n${item.prenomProfesseur} ${
+                    item.nomProfesseur
                   }\nInscrits:\n${
                     item.registeredMembers
                       ? item.registeredMembers.join(", ")
@@ -172,11 +129,11 @@ export default function DisplayCours({ idAdh }) {
                 <Space>
                   <Button
                     type="primary"
-                    onClick={() => reserveCourse(item.id, idAdh)}
+                    onClick={() => reserveCourse(item.idCours, idAdh)}
                   >
                     {"Je réserve"}
                   </Button>
-                  <Button onClick={() => cancelCourse(item.id, idAdh)}>
+                  <Button onClick={() => cancelCourse(item.idCours, idAdh)}>
                     {"Je me désinscris"}
                   </Button>
                 </Space>

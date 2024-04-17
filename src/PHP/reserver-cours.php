@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_stmt_bind_param($insertStmt, "ii", $idCours, $idAdh);
 
     if (mysqli_stmt_execute($insertStmt)) {
-        echo json_encode(array("status" => "success", "message" => "Votre cours a bien été réservé"));
+        echo json_encode(array("status" => "success", "message" => "Félicitations, vous avez réservé le cours avec succès"));
     } else {
         echo json_encode(array("status" => "error", "message" => "Erreur lors de la réservation du cours"));
     }
