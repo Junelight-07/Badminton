@@ -98,7 +98,7 @@ export default function DisplayCours({ idAdh }) {
         dateCellRender={(value) => {
           const date = value.format("ddd MMM DD YYYY");
           const dataList = courseData[date] || [];
-          console.log("dataList", dataList);
+
           return (
             <ul className="events">
               {dataList?.map((item) => (
