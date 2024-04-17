@@ -50,8 +50,7 @@ export default function Comments({ idAdh }) {
 
   const onFinish = (values) => {
     values.dateCommentaire = format(new Date(), "yyyy-MM-dd");
-    values.idAdh = 171;
-    values.idCours = 5;
+    values.idAdh = idAdh;
     axios
       .post("http://127.0.0.1/badminton/src/PHP/comment.php", {
         values,
@@ -95,6 +94,11 @@ export default function Comments({ idAdh }) {
           extra={courses[0].datetime}
         >
           <Form form={form} onFinish={onFinish} initialValues={{ rating: 3 }}>
+            <Form.Item
+              hidden
+              name="idCours"
+              initialValue={courses[0].idCours}
+            />
             <Form.Item
               name="comment"
               rules={[
