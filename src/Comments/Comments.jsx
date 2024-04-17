@@ -50,8 +50,8 @@ export default function Comments({ idAdh }) {
 
   const onFinish = (values) => {
     values.dateCommentaire = format(new Date(), "yyyy-MM-dd");
-    values.idAdh = 171;
-    values.idCours = 5;
+    values.idAdh = idAdh;
+    values.idCours = courses[0].idCours;
     axios
       .post("http://127.0.0.1/badminton/src/PHP/comment.php", {
         values,
@@ -74,7 +74,6 @@ export default function Comments({ idAdh }) {
         );
       });
   };
-
   return (
     <div
       style={{
