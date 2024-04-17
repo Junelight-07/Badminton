@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button, Calendar, List, message, Modal, Space } from "antd";
+import {
+  Badge,
+  Button,
+  Calendar,
+  List,
+  message,
+  Modal,
+  Rate,
+  Space,
+} from "antd";
 import axios from "axios";
 import VirtualList from "rc-virtual-list";
 import PropTypes from "prop-types";
@@ -117,13 +126,24 @@ export default function DisplayCours({ idAdh }) {
               <List.Item key={item.id}>
                 <List.Item.Meta
                   title={`${item.nomCours} : ${item.heure}`}
-                  description={`Professeur:\n${item.prenomProfesseur} ${
-                    item.nomProfesseur
-                  }\nInscrits:\n${
-                    item.registeredMembers
-                      ? item.registeredMembers.join(", ")
-                      : ""
-                  }`}
+                  description={
+                    <>
+                      {item.averageRating && (
+                        <>
+                          Note moyenne :<br />
+                          <Rate disabled value={item.averageRating} />
+                          <br />
+                        </>
+                      )}
+                      Professeur:
+                      <br /> {item.prenomProfesseur} {item.nomProfesseur}
+                      <br />
+                      Inscrits: <br />
+                      {item.registeredMembers
+                        ? item.registeredMembers.join(", ")
+                        : ""}
+                    </>
+                  }
                   style={{ whiteSpace: "pre-line" }}
                 />
                 <Space>

@@ -10,11 +10,13 @@ if ($mysqli->connect_error) {
 }
 
 $query = "SELECT cours.idCours, cours.nomCours, professeurs.nomProfesseur, professeurs.prenomProfesseur, cours.datetime,
-          IFNULL(GROUP_CONCAT(CONCAT(adherents.prenomAdh, ' ', adherents.nomAdh) SEPARATOR ', '), 'encore aucun inscrits à ce cours') as registeredMembers
+          IFNULL(GROUP_CONCAT(CONCAT(adherents.prenomAdh, ' ', adherents.nomAdh) SEPARATOR ', '), 'encore aucun inscrits à ce cours') as registeredMembers,
+          AVG(commenter.note) as averageRating
           FROM cours
           INNER JOIN professeurs ON cours.idProfesseur = professeurs.idProfesseur
           LEFT JOIN reservation ON cours.idCours = reservation.idCours
           LEFT JOIN adherents ON reservation.idAdh = adherents.idAdh
+          LEFT JOIN commenter ON cours.idCours = commenter.idCours
           GROUP BY cours.idCours";
 $result = $mysqli->query($query);
 
