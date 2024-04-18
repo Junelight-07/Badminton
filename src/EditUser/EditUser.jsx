@@ -88,13 +88,13 @@ export default function EditUser() {
 						},
 					]}
 				>
-					<DatePicker
+					{/* <DatePicker
 						placeholder="Choisir une date"
 						format={dateFormat}
 						defaultValue={dayjs(`${currentDate}-${yearFiveAgo}`, dateFormat)}
 						minDate={dayjs(`01-01-${yearHundredAgo}`, dateFormat)}
 						maxDate={dayjs(`31-12-${yearFiveAgo}`, dateFormat)}
-					/>
+					/> */}
 				</Form.Item>
 				<Form.Item
 					required
